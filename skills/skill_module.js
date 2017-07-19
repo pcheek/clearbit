@@ -142,6 +142,9 @@ module.exports = function(controller) {
 						if(p.name && p.name.fullName) {
 							about = 'Here\'s what I found out about ' + p.name.fullName + '...';
 						}
+						about += `
+
+`;
 						if(p.location) about += '\nLocated In: ' + p.location;
 						if(p.bio) about += '\nBiography: ' + p.bio;
 						if(p.site) about += '\nWebsite: ' + p.site;
