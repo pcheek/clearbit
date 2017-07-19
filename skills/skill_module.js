@@ -125,9 +125,21 @@ module.exports = function(controller) {
 			}, function(error, response, body) {
 				console.log("queryClearbit error", error);
 				console.log("queryClearbit body", body);
-				return callback(error, response, body);
+				return callback(body);
 			});
     };
+
+    // https://www.sitepoint.com/community/t/capitalizing-first-letter-of-each-word-in-string/209644/2
+    function titleCase(str) {
+			 str = str.toLowerCase().split(' ');                // will split the string delimited by space into an array of words
+
+			 for(var i = 0; i < str.length; i++){               // str.length holds the number of occurrences of the array...
+						str[i] = str[i].split('');                    // splits the array occurrence into an array of letters
+						str[i][0] = str[i][0].toUpperCase();          // converts the first occurrence of the array to uppercase
+						str[i] = str[i].join('');                     // converts the array of letters back into a word.
+			 }
+			 return str.join(' ');                              //  converts the array of words back to a sentence.
+			}
 
     // Before the response thread starts, run this:
     controller.studio.beforeThread('lookup','response', function(convo, next) {
@@ -142,7 +154,49 @@ module.exports = function(controller) {
 						setTimeout(function() {
 							console.log("Querying Clearbit #3");
 							queryClearbit(convo, function(response) {
-								setTimeout(function() {
+								setTimeout(function(response) {
+									if(!response || response == null || !response.person) {
+										convo.setVar('status', 'Sorry, there was a problem querying for this email address.');
+									} else {
+										var p = repsonse.person;
+										var about = 'Here\'s what I found...';
+										if(p.name && p.name.fullName) {
+											about = 'Here\'s what I found out about ' + p.name.fullName + '...';
+										}
+										if(p.location) about += '\nLocated In: ' + p.location;
+										if(p.bio) about += '\nBiography: ' + p.bio;
+										if(p.site) about += '\nWebsite: ' + p.site;
+										if(p.employment) {
+											if(p.employment.title) about += p.employment.title + ' at ';
+											if(p.employment.name) about += p.employment.name;
+											if(p.employment.seniority) about += '\nSeniority: ' + titleCase(p.employment.seniority);
+											if(p.employment.role) about += '\nRole: ' + titleCase(p.employment.role);
+											if(p.employment.domain) about += '\nCompany Website: ' + p.employment.domain;
+										}
+										if(p.facebook) {
+											if(p.facebook.handle) about += '\nFacebook: http://facebook.com/' + p.facebook.handle;
+										}
+										if(p.github) {
+											var github_followers_string = '';
+											if(p.github.followers) github_followers_string = p.github.followers + ' Followers on ';
+											if(p.github.handle) about += '\n' + github_followers_string + 'Github: http://github.com/' + p.github.handle;
+										}
+										if(p.twitter) {
+											var twitter_followers_string = '';
+											if(p.twitter.followers) twitter_followers_string = p.twitter.followers + ' Followers on ';
+											if(p.twitter.handle) about += '\n' + twitter_followers_string + 'Twitter: http://twitter.com/' + p.twitter.handle;
+										}
+										if(p.linkedin) {
+											if(p.linkedin.handle) about += '\nLinkedIn: http://linkedin.com/' + p.linkedin.handle;
+										}
+										if(p.googleplus) {
+											if(p.googleplus.handle) about += '\nGoogle+: http://plus.google.com/' + p.googleplus.handle;
+										}
+										if(p.aboutme) {
+											if(p.aboutme.handle) about += '\nAbout.me: http://about.me/' + p.aboutme.handle;
+										}
+										convo.setVar('status', about);
+									}
 									next();
 								}, 1000);
 							});
