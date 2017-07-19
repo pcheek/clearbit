@@ -137,7 +137,7 @@ module.exports = function(controller) {
 						return callback(body);
 					} else {
 						console.log("We have person data...");
-						var p = repsonse.person;
+						var p = body.person;
 						var about = 'Here\'s what I found...';
 						if(p.name && p.name.fullName) {
 							about = 'Here\'s what I found out about ' + p.name.fullName + '...';
