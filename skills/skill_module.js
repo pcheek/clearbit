@@ -128,7 +128,6 @@ module.exports = function(controller) {
 						return queryClearbitRecursively(convo, callback);
 					}, 1000);
 				} else {
-					console.log("body", body);
 					body = JSON.parse(body);
 					if(body.error && body.error.type == "queued") {
 						setTimeout(function() {
@@ -148,6 +147,7 @@ module.exports = function(controller) {
 						if(p.name && p.name.fullName) {
 							status = 'Here\'s what I found out about ' + p.name.fullName + '...';
 						}
+						convo.setVar('status', status);
 						if(p.location) convo.setVar('location', p.location);
 						if(p.bio) convo.setVar('bio', p.bio);
 						if(p.site) convo.setVar('url', p.site);
