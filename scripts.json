@@ -1,0 +1,161 @@
+[
+    {
+        "command": "lookup",
+        "description": "Find someone's personal information",
+        "triggers": [
+            {
+                "type": "string",
+                "pattern": "lookup"
+            }
+        ],
+        "variables": [
+            {
+                "name": "email",
+                "type": "string",
+                "id": 305
+            },
+            {
+                "name": "question_1",
+                "type": "string"
+            },
+            {
+                "name": "question_2",
+                "type": "string"
+            },
+            {
+                "name": "question_3",
+                "type": "string"
+            }
+        ],
+        "script": [
+            {
+                "topic": "default",
+                "script": [
+                    {
+                        "text": [
+                            "Alrighty, let's find out more about someone. What's their email address?"
+                        ],
+                        "collect": {
+                            "key": "email",
+                            "options": [
+                                {
+                                    "default": true,
+                                    "pattern": "default",
+                                    "action": "next"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "text": [
+                            "Hang tight! Let me see what I can find..."
+                        ]
+                    },
+                    {
+                        "action": "response"
+                    }
+                ]
+            },
+            {
+                "topic": "on_timeout",
+                "script": [
+                    {
+                        "text": [
+                            "Looks like you got distracted. We can continue later."
+                        ]
+                    },
+                    {
+                        "action": "timeout"
+                    }
+                ]
+            },
+            {
+                "topic": "response",
+                "script": [
+                    {
+                        "text": [
+                            "{{vars.status}}"
+                        ]
+                    },
+                    {
+                        "text": [
+                            "Location: {{vars.location}}"
+                        ]
+                    },
+                    {
+                        "text": [
+                            "Bio: {{vars.bio}}"
+                        ]
+                    },
+                    {
+                        "text": [
+                            "URL: {{vars.url}}"
+                        ]
+                    },
+                    {
+                        "text": [
+                            "Title: {{vars.title}}"
+                        ]
+                    },
+                    {
+                        "text": [
+                            "Company: {{vars.company}}"
+                        ]
+                    },
+                    {
+                        "text": [
+                            "Seniority: {{vars.seniority}}"
+                        ]
+                    },
+                    {
+                        "text": [
+                            "Role: {{vars.role}}"
+                        ]
+                    },
+                    {
+                        "text": [
+                            "Company URL: {{vars.company_url}}"
+                        ]
+                    },
+                    {
+                        "text": [
+                            "Facebook: {{vars.facebook}}"
+                        ]
+                    },
+                    {
+                        "text": [
+                            "Twitter: {{vars.twitter}}"
+                        ]
+                    },
+                    {
+                        "text": [
+                            "LinkedIn: {{vars.linkedin}}"
+                        ]
+                    },
+                    {
+                        "text": [
+                            "GitHub: {{vars.github}}"
+                        ]
+                    },
+                    {
+                        "action": "complete"
+                    }
+                ]
+            },
+            {
+                "topic": "error",
+                "script": [
+                    {
+                        "text": [
+                            "Error: {{vars.status}}"
+                        ]
+                    },
+                    {
+                        "action": "complete"
+                    }
+                ]
+            }
+        ],
+        "modified": "Wed Jul 19 2017 23:47:28 GMT+0000 (UTC)"
+    }
+]
