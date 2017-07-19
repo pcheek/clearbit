@@ -123,8 +123,8 @@ module.exports = function(controller) {
 				method: 'GET',
 				followAllRedirects: true
 			}, function(error, response, body) {
-				console.log("queryClearbit error", error);
-				console.log("queryClearbit body", body);
+				//console.log("queryClearbit error", error);
+				//console.log("queryClearbit body", body);
 				return callback(body);
 			});
     };
@@ -147,6 +147,7 @@ module.exports = function(controller) {
 			console.log('In the script *lookup*, about to start the thread *response*');
 
 			console.log("Querying Clearbit #1");
+			convo.setVar('status', 'No response data.');
 			queryClearbit(convo, function(response) {
 				setTimeout(function() {
 					console.log("Querying Clearbit #2");
@@ -158,6 +159,7 @@ module.exports = function(controller) {
 									if(!response || response == null || !response.person) {
 										convo.setVar('status', 'Sorry, there was a problem querying for this email address.');
 									} else {
+										console.log("We have person data...");
 										var p = repsonse.person;
 										var about = 'Here\'s what I found...';
 										if(p.name && p.name.fullName) {
