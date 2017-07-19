@@ -124,24 +124,30 @@ module.exports = function(controller) {
 				followAllRedirects: true
 			}, function(error, response, body) {
 				if(!body || body == null) {
-					setTimeout(function() {
-						return queryClearbitRecursively(convo, callback);
-					}, 1000);
+					// Handle an empty or missing response body.
+					convo.setVar('status', 'Sorry, there was a problem querying for this individual: ' + body.error.message);
+					convo.gotoThread('error');
+					return callback(convo, body);
 				} else {
+					// Parse the JSON body.
 					body = JSON.parse(body);
 					if(body.error && body.error.type == "queued") {
+						// If the user lookup has been queued, then try again in one second.
 						setTimeout(function() {
 							return queryClearbitRecursively(convo, callback);
 						}, 1000);
 					} else if(body.error) {
+						// If there is an error looking up the user redirect to the error thread.
 						convo.setVar('status', 'Sorry, there was a problem querying for this individual: ' + body.error.message);
 						convo.gotoThread('error');
 						return callback(convo, body);
 					} else if(!body.person) {
+						// If the person field does not exist then display an error to the user.
 						convo.setVar('status', 'Sorry, there was a problem querying for this email address.');
 						convo.gotoThread('error');
 						return callback(convo, body);
 					} else {
+						// Parse the person's data and fill the respective variables.
 						var p = body.person;
 						var status = 'Here\'s what I found...';
 						if(p.name && p.name.fullName) {
@@ -201,6 +207,8 @@ module.exports = function(controller) {
     // Before the response thread starts, run this:
     controller.studio.beforeThread('lookup','response', function(convo, next) {
 
+			// Once the user has specified an email address to lookup
+			// then query Clearbit until Clearbit returns a response.
 			queryClearbitRecursively(convo, function(convo, response) {
 				next();
 			});
