@@ -129,51 +129,55 @@ module.exports = function(controller) {
 					setTimeout(function() {
 						return queryClearbit(convo, callback);
 					}, 1000);
-				} else if(!body.person) {
-					console.log("Person not defined or null");
-					convo.setVar('status', 'Sorry, there was a problem querying for this email address.');
 				} else {
-					console.log("We have person data...");
-					var p = repsonse.person;
-					var about = 'Here\'s what I found...';
-					if(p.name && p.name.fullName) {
-						about = 'Here\'s what I found out about ' + p.name.fullName + '...';
+					body = JSON.parse(body);
+					if(!body.person) {
+						console.log("Person not defined or null");
+						convo.setVar('status', 'Sorry, there was a problem querying for this email address.');
+						return callback(body);
+					} else {
+						console.log("We have person data...");
+						var p = repsonse.person;
+						var about = 'Here\'s what I found...';
+						if(p.name && p.name.fullName) {
+							about = 'Here\'s what I found out about ' + p.name.fullName + '...';
+						}
+						if(p.location) about += '\nLocated In: ' + p.location;
+						if(p.bio) about += '\nBiography: ' + p.bio;
+						if(p.site) about += '\nWebsite: ' + p.site;
+						if(p.employment) {
+							if(p.employment.title) about += p.employment.title + ' at ';
+							if(p.employment.name) about += p.employment.name;
+							if(p.employment.seniority) about += '\nSeniority: ' + titleCase(p.employment.seniority);
+							if(p.employment.role) about += '\nRole: ' + titleCase(p.employment.role);
+							if(p.employment.domain) about += '\nCompany Website: ' + p.employment.domain;
+						}
+						if(p.facebook) {
+							if(p.facebook.handle) about += '\nFacebook: http://facebook.com/' + p.facebook.handle;
+						}
+						if(p.github) {
+							var github_followers_string = '';
+							if(p.github.followers) github_followers_string = p.github.followers + ' Followers on ';
+							if(p.github.handle) about += '\n' + github_followers_string + 'Github: http://github.com/' + p.github.handle;
+						}
+						if(p.twitter) {
+							var twitter_followers_string = '';
+							if(p.twitter.followers) twitter_followers_string = p.twitter.followers + ' Followers on ';
+							if(p.twitter.handle) about += '\n' + twitter_followers_string + 'Twitter: http://twitter.com/' + p.twitter.handle;
+						}
+						if(p.linkedin) {
+							if(p.linkedin.handle) about += '\nLinkedIn: http://linkedin.com/' + p.linkedin.handle;
+						}
+						if(p.googleplus) {
+							if(p.googleplus.handle) about += '\nGoogle+: http://plus.google.com/' + p.googleplus.handle;
+						}
+						if(p.aboutme) {
+							if(p.aboutme.handle) about += '\nAbout.me: http://about.me/' + p.aboutme.handle;
+						}
+						console.log("Setting 'status' variable to:", about);
+						convo.setVar('status', about);
+						return callback(body);
 					}
-					if(p.location) about += '\nLocated In: ' + p.location;
-					if(p.bio) about += '\nBiography: ' + p.bio;
-					if(p.site) about += '\nWebsite: ' + p.site;
-					if(p.employment) {
-						if(p.employment.title) about += p.employment.title + ' at ';
-						if(p.employment.name) about += p.employment.name;
-						if(p.employment.seniority) about += '\nSeniority: ' + titleCase(p.employment.seniority);
-						if(p.employment.role) about += '\nRole: ' + titleCase(p.employment.role);
-						if(p.employment.domain) about += '\nCompany Website: ' + p.employment.domain;
-					}
-					if(p.facebook) {
-						if(p.facebook.handle) about += '\nFacebook: http://facebook.com/' + p.facebook.handle;
-					}
-					if(p.github) {
-						var github_followers_string = '';
-						if(p.github.followers) github_followers_string = p.github.followers + ' Followers on ';
-						if(p.github.handle) about += '\n' + github_followers_string + 'Github: http://github.com/' + p.github.handle;
-					}
-					if(p.twitter) {
-						var twitter_followers_string = '';
-						if(p.twitter.followers) twitter_followers_string = p.twitter.followers + ' Followers on ';
-						if(p.twitter.handle) about += '\n' + twitter_followers_string + 'Twitter: http://twitter.com/' + p.twitter.handle;
-					}
-					if(p.linkedin) {
-						if(p.linkedin.handle) about += '\nLinkedIn: http://linkedin.com/' + p.linkedin.handle;
-					}
-					if(p.googleplus) {
-						if(p.googleplus.handle) about += '\nGoogle+: http://plus.google.com/' + p.googleplus.handle;
-					}
-					if(p.aboutme) {
-						if(p.aboutme.handle) about += '\nAbout.me: http://about.me/' + p.aboutme.handle;
-					}
-					console.log("Setting 'status' variable to:", about);
-					convo.setVar('status', about);
-					return callback(body);
 				}
 			});
     };
