@@ -117,26 +117,24 @@ module.exports = function(controller) {
     });
 
     var queryClearbitRecursively = function(convo, callback) {
-    	console.log("queryClearbit url", 'https://person.clearbit.com/v2/combined/find?email=' + convo.extractResponse('email').trim());
+    	// Query Clearbit using the specified email address.
     	request.get({
 				url:     'https://' + process.env.clearbit_secret_key + ':@person.clearbit.com/v2/combined/find?email=' + convo.extractResponse('email').trim(),
 				method: 'GET',
 				followAllRedirects: true
 			}, function(error, response, body) {
-				//console.log("queryClearbit error", error);
-				console.log("queryClearbit body", body);
 				if(!body || body == null) {
 					setTimeout(function() {
 						return queryClearbit(convo, callback);
 					}, 1000);
 				} else {
+					console.log("body", body);
 					body = JSON.parse(body);
 					if(!body.person) {
-						console.log("Person not defined or null");
 						convo.setVar('status', 'Sorry, there was a problem querying for this email address.');
+						convo.gotoThread('error');
 						return callback(convo, body);
 					} else {
-						console.log("We have person data...");
 						var p = body.person;
 						var status = 'Here\'s what I found...';
 						if(p.name && p.name.fullName) {
@@ -174,7 +172,6 @@ module.exports = function(controller) {
 						if(p.aboutme) {
 							if(p.aboutme.handle) convo.setVar('aboutme', 'http://about.me/' + p.aboutme.handle);
 						}
-						convo.setVar('status', status);
 						return callback(convo, body);
 					}
 				}
@@ -196,10 +193,6 @@ module.exports = function(controller) {
     // Before the response thread starts, run this:
     controller.studio.beforeThread('lookup','response', function(convo, next) {
 
-			console.log('In the script *lookup*, about to start the thread *response*');
-
-			console.log("Querying Clearbit #1");
-			convo.setVar('status', 'No response data.');
 			queryClearbitRecursively(convo, function(convo, response) {
 				next();
 			});
