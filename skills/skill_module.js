@@ -125,14 +125,14 @@ module.exports = function(controller) {
 			}, function(error, response, body) {
 				if(!body || body == null) {
 					setTimeout(function() {
-						return queryClearbit(convo, callback);
+						return queryClearbitRecursively(convo, callback);
 					}, 1000);
 				} else {
 					console.log("body", body);
 					body = JSON.parse(body);
 					if(body.error && body.error.type == "queued") {
 						setTimeout(function() {
-							return queryClearbit(convo, callback);
+							return queryClearbitRecursively(convo, callback);
 						}, 1000);
 					} else if(body.error) {
 						convo.setVar('status', 'Sorry, there was a problem querying for this individual: ' + body.error.message);
