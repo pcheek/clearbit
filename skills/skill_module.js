@@ -202,7 +202,7 @@ module.exports = function(controller) {
 			console.log("Querying Clearbit #1");
 			convo.setVar('status', 'No response data.');
 			queryClearbitRecursively(convo, function(convo, response) {
-				console.log("final status", convo.extractResponse('status'));
+				console.log("final status", convo, convo.extractResponse('status'));
 				next();
 			});
 
