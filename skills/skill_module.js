@@ -130,7 +130,15 @@ module.exports = function(controller) {
 				} else {
 					console.log("body", body);
 					body = JSON.parse(body);
-					if(!body.person) {
+					if(body.error && body.error.type == "queued") {
+						setTimeout(function() {
+							return queryClearbit(convo, callback);
+						}, 1000);
+					} else if(body.error) {
+						convo.setVar('status', 'Sorry, there was a problem querying for this individual: ' + body.error.message);
+						convo.gotoThread('error');
+						return callback(convo, body);
+					} else if(!body.person) {
 						convo.setVar('status', 'Sorry, there was a problem querying for this email address.');
 						convo.gotoThread('error');
 						return callback(convo, body);
