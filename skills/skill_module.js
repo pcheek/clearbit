@@ -138,47 +138,43 @@ module.exports = function(controller) {
 					} else {
 						console.log("We have person data...");
 						var p = body.person;
-						var about = 'Here\'s what I found...';
+						var status = 'Here\'s what I found...';
 						if(p.name && p.name.fullName) {
-							about = 'Here\'s what I found out about ' + p.name.fullName + '...';
+							status = 'Here\'s what I found out about ' + p.name.fullName + '...';
 						}
-						about += `
-
-`;
-						if(p.location) about += '\nLocated In: ' + p.location;
-						if(p.bio) about += '\nBiography: ' + p.bio;
-						if(p.site) about += '\nWebsite: ' + p.site;
+						if(p.location) convo.setVar('location', p.location);
+						if(p.bio) convo.setVar('bio', p.bio);
+						if(p.site) convo.setVar('url', p.site);
 						if(p.employment) {
-							if(p.employment.title) about += p.employment.title + ' at ';
-							if(p.employment.name) about += p.employment.name;
-							if(p.employment.seniority) about += '\nSeniority: ' + titleCase(p.employment.seniority);
-							if(p.employment.role) about += '\nRole: ' + titleCase(p.employment.role);
-							if(p.employment.domain) about += '\nCompany Website: ' + p.employment.domain;
+							if(p.employment.title) convo.setVar('title', p.employment.title);
+							if(p.employment.name) convo.setVar('company', p.employment.name);
+							if(p.employment.seniority) convo.setVar('seniority', titleCase(p.employment.seniority));
+							if(p.employment.role) convo.setVar('role', titleCase(p.employment.role));
+							if(p.employment.domain) convo.setVar('company_url', p.employment.domain);
 						}
 						if(p.facebook) {
-							if(p.facebook.handle) about += '\nFacebook: http://facebook.com/' + p.facebook.handle;
+							if(p.facebook.handle) convo.setVar('facebook', 'http://facebook.com/' + p.facebook.handle);
 						}
 						if(p.github) {
 							var github_followers_string = '';
 							if(p.github.followers) github_followers_string = p.github.followers + ' Followers on ';
-							if(p.github.handle) about += '\n' + github_followers_string + 'Github: http://github.com/' + p.github.handle;
+							if(p.github.handle) convo.setVar('github', github_followers_string + 'Github: http://github.com/' + p.github.handle);
 						}
 						if(p.twitter) {
 							var twitter_followers_string = '';
 							if(p.twitter.followers) twitter_followers_string = p.twitter.followers + ' Followers on ';
-							if(p.twitter.handle) about += '\n' + twitter_followers_string + 'Twitter: http://twitter.com/' + p.twitter.handle;
+							if(p.twitter.handle) convo.setVar('twitter', twitter_followers_string + 'Twitter: http://twitter.com/' + p.twitter.handle);
 						}
 						if(p.linkedin) {
-							if(p.linkedin.handle) about += '\nLinkedIn: http://linkedin.com/' + p.linkedin.handle;
+							if(p.linkedin.handle) convo.setVar('linkedin', 'http://linkedin.com/' + p.linkedin.handle);
 						}
 						if(p.googleplus) {
-							if(p.googleplus.handle) about += '\nGoogle+: http://plus.google.com/' + p.googleplus.handle;
+							if(p.googleplus.handle) convo.setVar('googleplus', 'http://plus.google.com/' + p.googleplus.handle);
 						}
 						if(p.aboutme) {
-							if(p.aboutme.handle) about += '\nAbout.me: http://about.me/' + p.aboutme.handle;
+							if(p.me.handle) convo.setVar('aboutme', 'http://about.me/' + p.aboutme.handle);
 						}
-						console.log("Setting 'status' variable to:", about);
-						convo.setVar('status', about);
+						convo.setVar('status', status);
 						return callback(convo, body);
 					}
 				}
@@ -205,7 +201,6 @@ module.exports = function(controller) {
 			console.log("Querying Clearbit #1");
 			convo.setVar('status', 'No response data.');
 			queryClearbitRecursively(convo, function(convo, response) {
-				console.log("final status", convo, convo.extractResponse('status'));
 				next();
 			});
 
