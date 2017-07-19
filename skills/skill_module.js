@@ -117,9 +117,9 @@ module.exports = function(controller) {
     });
 
     var queryClearbit = function(convo, callback) {
+    	console.log("queryClearbit url", 'https://person.clearbit.com/v2/combined/find?email=' + convo.extractResponse('email').trim());
     	request.get({
-				url:     'https://person.clearbit.com/v2/combined/find?email=' + convo.extractResponse('email'),
-				jar: myjar,
+				url:     'https://person.clearbit.com/v2/combined/find?email=' + convo.extractResponse('email').trim(),
 				method: 'GET',
 				followAllRedirects: true
 			}, function(error, response, body) {
