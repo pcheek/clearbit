@@ -134,7 +134,7 @@ module.exports = function(controller) {
 					if(!body.person) {
 						console.log("Person not defined or null");
 						convo.setVar('status', 'Sorry, there was a problem querying for this email address.');
-						return callback(body);
+						return callback(convo, body);
 					} else {
 						console.log("We have person data...");
 						var p = body.person;
@@ -176,7 +176,7 @@ module.exports = function(controller) {
 						}
 						console.log("Setting 'status' variable to:", about);
 						convo.setVar('status', about);
-						return callback(body);
+						return callback(convo, body);
 					}
 				}
 			});
@@ -201,7 +201,8 @@ module.exports = function(controller) {
 
 			console.log("Querying Clearbit #1");
 			convo.setVar('status', 'No response data.');
-			queryClearbitRecursively(convo, function(response) {
+			queryClearbitRecursively(convo, function(convo, response) {
+				console.log("final status", convo.extractResponse('status'));
 				next();
 			});
 
