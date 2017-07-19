@@ -195,6 +195,7 @@ module.exports = function(controller) {
 										if(p.aboutme) {
 											if(p.aboutme.handle) about += '\nAbout.me: http://about.me/' + p.aboutme.handle;
 										}
+										console.log("Setting 'status' variable to:", about);
 										convo.setVar('status', about);
 									}
 									next();
