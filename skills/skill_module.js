@@ -172,7 +172,7 @@ module.exports = function(controller) {
 							if(p.googleplus.handle) convo.setVar('googleplus', 'http://plus.google.com/' + p.googleplus.handle);
 						}
 						if(p.aboutme) {
-							if(p.me.handle) convo.setVar('aboutme', 'http://about.me/' + p.aboutme.handle);
+							if(p.aboutme.handle) convo.setVar('aboutme', 'http://about.me/' + p.aboutme.handle);
 						}
 						convo.setVar('status', status);
 						return callback(convo, body);
