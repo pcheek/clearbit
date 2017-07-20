@@ -57,4 +57,4 @@ To use, add the Clearbit Bot (clearbit@sparkbot.io) to your Cisco Spark team. In
 
 # About Clearbit for Cisco Spark 
 
-Tutorator is a project for the [Cisco Spark Industry Challenge](https://ciscospark.devpost.com/)
+The Clearbit Cisco Spark Bot is a project for the [Cisco Spark Industry Challenge](https://ciscospark.devpost.com/)
