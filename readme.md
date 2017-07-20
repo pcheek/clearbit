@@ -1,9 +1,10 @@
 # Tutorator
 
 New user just signed up? About to jump on a call with a prospective customer? The Clearbit Bot for Cisco Spark is here to help.
-The Clearbit Cisco Spark integration transforms email address into a complete user profile, enriching your customer understanding, and delivering that data directly to Cisco Spark where your team can take action.
 
-With nothing more than an email address you can identify an individual with an enriched user provide, which includes their individual details, as well as complete company intelligence, allowing your team to immediately identify high value prospects and easily assess trends in new user signups.
+The Clearbit Cisco Spark integration transforms an email address into a complete user profile, enriching your customer understanding, and delivering that data directly to Cisco Spark where your team can take action.
+
+With nothing more than an email address you can identify an individual with an enriched user provide, which includes the individual's details, as well as complete company intelligence, allowing your team to immediately identify high value prospects and easily assess trends in new user signups.
 
 Clearbit searches hundreds of data sources in real-time for every contact, so you get the most comprehensive, up-to-date profile possible.
 
