@@ -1,4 +1,4 @@
-# Tutorator
+# Clearbit
 
 New user just signed up? About to jump on a call with a prospective customer? The Clearbit Bot for Cisco Spark is here to help.
 
@@ -12,9 +12,9 @@ To instantly enrich an email, use the lookup command: `@Clearbit lookup`
 
 ### Getting Started
 
-There are a few steps to get started on working with the Tutorator bot:
+There are a few steps to get started on working with the Clearbit bot:
 
-#### Installing Tutorator
+#### Installing Clearbit
 
 [Deploy to Heroku](https://heroku.com/deploy?template=https://github.com/pcheek/clearbit/master)
 
